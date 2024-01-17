@@ -1,0 +1,1 @@
+gcloud functions deploy Monitor --allow-unauthenticated --entry-point=monitorService.DetectObjectsMonitorFunction --runtime=java11 --trigger-topic detectionworkers --region=europe-west1 --source=target/deployment --service-account=cn-2122-g03-allservices@cn2122-t1-g03.iam.gserviceaccount.com

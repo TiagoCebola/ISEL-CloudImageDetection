@@ -1,0 +1,1 @@
+gcloud functions deploy Iplookup --allow-unauthenticated --entry-point=lookupService.Iplookup --runtime=java11 --trigger-http --region=europe-west1 --source=target/deployment --service-account=cn-2122-g03-allservices@cn2122-t1-g03.iam.gserviceaccount.com

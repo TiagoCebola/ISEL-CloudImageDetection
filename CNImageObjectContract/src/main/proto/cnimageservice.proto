@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+// each class is defined in each own file, inside a common package
+option java_multiple_files = true;
+option java_package = "cnimageservice";
+
+package cnimageservice; // package do proto
+
+
+// The CNImageService service definition.
+service CNImageService {
+
+    // Tentativa de conexão ao servidor
+    rpc isAlive(Void) returns (Text);
+
+    // Submissão de um ficheiro imagem para deteção de objetos
+    rpc SubmitImageDetectionObjectRequest(stream Img) returns (ReqId);
+
+    // Retorno de um ficheiro imagem com a deteção e os nomes dos objetos
+    rpc RequestImageDetectionObjectResult(ReqId) returns (ImgWithObjDetected);
+
+    // Retorna os nomes dos ficheiros com o objeto referido
+    rpc RequestFileNamesResult(FileReq) returns (FileResp);
+
+}
+
+// Request body
+message Void {
+
+}
+
+// Server answer
+message Text {
+    string msg = 1;
+}
+
+// Identificador do pedido
+message ReqId {
+    string id = 1;
+}
+
+// Identificador do pedido
+message FileReq {
+    string date1 = 1;
+    string date2 = 2;
+    string objectName = 3;
+    double assuranceDegree = 4;
+}
+
+
+message FileResp {
+    repeated string fileName = 1;
+}
+
+// Input Message
+message Img {
+    message Metadata {
+        string name = 1;
+        int64 size = 2;
+    }
+
+    oneof chunkOrMetadata {
+        Metadata metadata = 1;
+        bytes chunk = 2;
+    }
+}
+
+// Output Message
+message ImgWithObjDetected {
+    repeated string objectNames = 1;
+    repeated double assuranceDegrees = 2;
+    // Will be the URL in the blob to access the image
+    string detectedImage = 3;
+}
+
+
+
